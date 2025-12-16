@@ -1,6 +1,8 @@
 package ma.enset.escqrsaxon.query.controllers;
 
+import ma.enset.escqrsaxon.query.dtos.AccountStatementResponseDTO;
 import ma.enset.escqrsaxon.query.entities.Account;
+import ma.enset.escqrsaxon.query.queries.GetAccountStatementQuery;
 import ma.enset.escqrsaxon.query.queries.GetAllAccountsQuery;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
@@ -27,4 +29,9 @@ public class AccountQueryController {
         return response;
     }
 
+    @GetMapping("/statement/{accountId}")
+    public CompletableFuture<AccountStatementResponseDTO> getAccountStatement(@PathVariable String accountId){
+        CompletableFuture<AccountStatementResponseDTO> response = queryGateway.query(new GetAccountStatementQuery(accountId), ResponseTypes.instanceOf(AccountStatementResponseDTO.class));
+        return response;
+    }
 }
